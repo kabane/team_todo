@@ -13,6 +13,8 @@ route.get('/', function (req, res, _next) {
 route.get('/user/edit', forceLogin, 'users_controller@edit');
 route.put('/user', forceLogin, 'users_controller@update');
 
+route.resource('/teams', { controller: 'teams_controller', only: ['show', 'create', 'store', 'edit', 'update'] });
+
 // resource style
 route.resource('examples', 'examples_controller');
 
