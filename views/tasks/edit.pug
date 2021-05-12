@@ -8,8 +8,10 @@ block content
     _method put
 
     div
+      label(for="title") タイトル
       input(name="title", value!=task.title)
     div  
+      label(for="body") 内容
       textarea(name="body")=task.body
     div
       input(type="submit")

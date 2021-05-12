@@ -3,7 +3,7 @@ extends ../layout
 block content 
   h1 タスクの新規作成
 
-  form.box(action!=`/teams/${team.id}/tasks`, method='post')
+  form(action!=`/teams/${team.id}/tasks`, method='post')
     _csrf
     _method=method
     
@@ -13,5 +13,5 @@ block content
     div  
       label(for="body") 内容
       textarea#body(name="body")=task.body
-    div.actions
+    div
       input(type="submit")
