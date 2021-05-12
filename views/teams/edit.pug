@@ -1,0 +1,15 @@
+extends ../layout
+
+block content 
+  h1 チーム編集
+
+  form.box(action=`/teams/${team.id}`, method="post")
+    _csrf
+    _method put
+    
+    div
+      label チーム名
+      input(name="name", value!=team.name)
+
+    div.actions
+      input(type="submit")

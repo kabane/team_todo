@@ -1,0 +1,14 @@
+extends ../layout
+
+block content 
+  h1 チーム作成
+
+  form.box(action=`/teams/`, method="post")
+    _csrf
+
+    div
+      label チーム名
+      input(name="name", value!=team.name)
+
+    div.actions
+      input(type="submit")
