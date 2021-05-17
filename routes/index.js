@@ -17,6 +17,7 @@ route.resource('/teams', { controller: 'teams_controller', only: ['show', 'creat
 
 const teamRoute = route.sub('/teams/:team');
 teamRoute.resource('tasks', { controller: 'tasks_controller', only: ['create', 'store', 'edit', 'update'] });
+teamRoute.resource('members', { controller: 'members_controller', only: ['index', 'store'] });
 
 // resource style
 route.resource('examples', 'examples_controller');
