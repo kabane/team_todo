@@ -6,7 +6,11 @@ class TeamsController extends Controller {
   // GET /:id
   async show(req, res) {
     const team = await models.Team.findByPk(req.params.team);
-    res.render('teams/show', { team });
+    const tasks = await team.getTasks({
+      include: ['team'],
+      order: [['status', 'DESC'], ['updatedAt', 'DESC']]
+    });
+    res.render('teams/show', { team, tasks });
   }
 
   // GET /create

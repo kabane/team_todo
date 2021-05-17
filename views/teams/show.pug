@@ -4,4 +4,24 @@ block content
   h1
     =team.name
 
+  a(href=`/teams/${team.id}/tasks/create`) 新規タスクの作成
+  br
   a(href=`/teams/${team.id}/edit`) 編集
+
+  h2 タスク一覧
+
+  table(border="1")
+    tbody 
+      tr 
+        th タスクID
+        th タイトル
+        th 作成日時
+        th 操作
+
+      each task in tasks
+        tr
+          td= task.id
+          td= task.title
+          td= helpers.formatDateTime(task.createdAt)
+          td
+            a(href=`/teams/${team.id}/tasks/${task.id}/edit`) 編集
