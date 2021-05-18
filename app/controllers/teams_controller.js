@@ -7,7 +7,7 @@ class TeamsController extends Controller {
   async show(req, res) {
     const team = await models.Team.findByPk(req.params.team);
     const tasks = await team.getTasks({
-      include: ['team'],
+      include: ['team', 'assignee'],
       order: [['status', 'DESC'], ['updatedAt', 'DESC']]
     });
     res.render('teams/show', { team, tasks });

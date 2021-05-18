@@ -13,5 +13,11 @@ block content
     div  
       label(for="body") 内容
       textarea#body(name="body")=task.body
+    div 
+      label(for="assigneeId") 担当者
+      select#assigneeId(name="assigneeId")
+        option(value="", selected=!task.assigneeId) なし
+        each member in members
+          option(value=member.user.id, selected=member.user.id === task.assigneeId)= member.user.displayName
     div
       input(type="submit")

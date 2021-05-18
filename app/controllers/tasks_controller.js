@@ -7,7 +7,12 @@ class TasksController extends Controller {
   async create(req, res) {
     const team = await models.Team.findByPk(req.params.team);
     const task = models.Task.build();
-    res.render('tasks/create', { team, task });
+    const members = await team.getMembers({
+      include: ['user'],
+      order: [['id']]
+    });
+    
+    res.render('tasks/create', { team, task, members });
   }
 
   // POST /
@@ -15,10 +20,12 @@ class TasksController extends Controller {
     const team = await models.Team.findByPk(req.params.team);
     const task = models.Task.build(req.body);
     task.set({
-      teamId: team.id
+      assigneeId: (req.body.assigneeId === '') ? null : req.body.assigneeId,
+      teamId: team.id,
+      creatorId: req.user.id
     });
     try {
-      await task.save({ fields: ['title', 'body', 'teamId'] });
+      await task.save({ fields: ['title', 'body', 'teamId', 'assigneeId', 'creatorId'] });
       await req.flash('info', '新規タスクを作成しました');
       res.redirect(`/teams/${team.id}`);
     } catch (err) {
@@ -33,20 +40,32 @@ class TasksController extends Controller {
 
   // GET /:id/edit
   async edit(req, res) {
-    const task = await models.Task.findByPk(req.params.task);
-    const team = await task.getTeam();
+    const team = await models.Team.findByPk(req.params.team);
+    const tasks = await team.getTasks({ where: { id: req.params.task } });
+    const task = tasks[0];
 
-    res.render('tasks/edit', { team, task });
+    if (task) {
+      const members = await team.getMembers({
+        include: ['user'],
+        order: [['id']]
+      });
+      res.render('tasks/edit', { team, task, members });
+    } else {
+      await req.flash('info', 'タスクが存在しないか編集権限がありません');
+      res.redirect(`/teams/${team.id}`); 
+    }
   }
 
   // PUT or PATCH /:id
   async update(req, res) {
-    const task = await models.Task.findByPk(req.params.task);
-    const team = await task.getTeam();
+    const team = await models.Team.findByPk(req.params.team);
+    const tasks = await team.getTasks({ where: { id: req.params.task } });
+    const task = tasks[0];
 
     try {
       task.set(req.body);
-      await task.save({ fields: ['title', 'body'] });
+      task.assigneeId = (req.body.assigneeId === '') ? null : req.body.assigneeId;
+      await task.save({ fields: ['title', 'body', 'assigneeId'] });
       await req.flash('info', '更新しました');
       res.redirect(`/teams/${team.id}/tasks/${task.id}/edit`);
     } catch (err) {
