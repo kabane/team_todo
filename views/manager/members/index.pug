@@ -1,0 +1,22 @@
+extends ../../layout
+
+block content 
+  h2 新メンバー追加
+  form(action=`/manager/teams/${team.id}/members/`, method="post")
+    _csrf
+    select(name="userId")
+      each user in users 
+        option(value!=user.id)=user.displayName
+    input(type="submit", value="追加")
+
+  h2 メンバー一覧
+  table(border="1") 
+    thead 
+      tr 
+        th 役割
+        th 名前
+    tbody 
+      each member in members
+        tr
+          td= member.role === 0 ? 'メンバー' : 'マネジャー'
+          td= member.user.displayName
