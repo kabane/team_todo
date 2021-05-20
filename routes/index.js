@@ -13,11 +13,16 @@ route.get('/', function (req, res, _next) {
 route.get('/user/edit', forceLogin, 'users_controller@edit');
 route.put('/user', forceLogin, 'users_controller@update');
 
-route.resource('/teams', { controller: 'teams_controller', only: ['show', 'create', 'store', 'edit', 'update'] });
+const managerRoute = route.sub('/manager', forceLogin);
+managerRoute.resource('teams', {
+  controller: 'manager/teams_controller', only: ['show', 'edit', 'update']
+});
 
-const teamRoute = route.sub('/teams/:team');
-teamRoute.resource('tasks', { controller: 'tasks_controller', only: ['create', 'store', 'edit', 'update'] });
-teamRoute.resource('members', { controller: 'members_controller', only: ['index', 'store'] });
+const teamRoute = managerRoute.sub('/teams/:team');
+teamRoute.resource('tasks', { controller: 'manager/tasks_controller', only: ['create', 'store', 'edit', 'update'] });
+teamRoute.resource('members', { controller: 'manager/members_controller', only: ['index', 'store'] });
+
+route.resource('/teams', { controller: 'teams_controller', only: ['create', 'store'] });
 
 // resource style
 route.resource('examples', 'examples_controller');
