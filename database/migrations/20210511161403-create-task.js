@@ -13,6 +13,15 @@ module.exports = {
         type: Sequelize.INTEGER,
         references: { model: 'Teams', key: 'id' }
       },
+      creatorId: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: { model: 'Users', key: 'id' }
+      },
+      assigneeId: {
+        type: Sequelize.INTEGER,
+        references: { model: 'Users', key: 'id' }
+      },
       title: {
         allowNull: false,
         type: Sequelize.STRING
