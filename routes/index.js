@@ -22,8 +22,7 @@ const teamRoute = managerRoute.sub('/teams/:team');
 teamRoute.resource('tasks', { controller: 'manager/tasks_controller', only: ['create', 'store', 'edit', 'update'] });
 teamRoute.resource('members', { controller: 'manager/members_controller', only: ['index', 'store'] });
 
-// route.resource('/teams', { controller: 'teams_controller', only: ['show', 'create', 'store', 'edit', 'update'] });
-// route.resource('tasks', { controller: 'tasks_controller', only: ['index', 'show'] });
+route.resource('/teams', { controller: 'teams_controller', only: ['create', 'store'] });
 
 // resource style
 route.resource('examples', 'examples_controller');
