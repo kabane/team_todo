@@ -17,7 +17,13 @@ class TeamsController extends Controller {
         ownerId: req.user.id
       });
       await team.save({ fields: ['name', 'ownerId'] });
-      await req.flash('info', `新規チーム${team.name}を作成しました`);
+      await req.flash('info', `新規チーム${team.name}を作成しました`)
+      await models.Member.create({
+        teamId: team.id,
+        userId: req.user.id,
+        role: models.Member.roles.manager
+      });
+
       res.redirect(`/`);
     } catch (err) {
       if (err instanceof ValidationError) {

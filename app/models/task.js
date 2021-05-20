@@ -15,6 +15,17 @@ module.exports = (sequelize, DataTypes) => {
         as: 'team',
         foreignKey: 'teamId'
       });
+
+      this.Creator = this.belongsTo(models.User, {
+        as: 'creator',
+        foreignKey: 'creatorId'
+      });
+
+      this.Assignee = this.belongsTo(models.User, {
+        as: 'assignee',
+        foreignKey: 'assigneeId'
+      });
+
     }
   };
   Task.init({
