@@ -9,6 +9,17 @@
 				"0": "通常",
 				"1": "管理者"
 			}
+		},
+		"Task": {
+			"statuses": {
+				"0": "models.Task.statuses.0"
+			}
+		},
+		"Member": {
+			"roles": {
+				"0": "models.Member.roles.0",
+				"1": "models.Member.roles.1"
+			}
 		}
 	}
 }
