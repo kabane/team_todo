@@ -7,16 +7,8 @@ module.exports = async function managableTeam(req, res, next) {
   if (!team) {
     next(new Error('team not found'));
   }
-
-  const managers = await models.Member.findAll({
-    where: {
-      role: 1,
-      userId: user.id,
-      teamId: team.id
-    }
-  });
-
-  if (managers.length == 0) {
+  
+  if (!await team.isManager(user)) {
     await req.flash('alert', 'アクセスできません');
     res.redirect('/');
   }

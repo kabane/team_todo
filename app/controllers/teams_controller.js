@@ -12,18 +12,8 @@ class TeamsController extends Controller {
   // POST /
   async store(req, res) {
     try {
-      const team = models.Team.build(req.body);
-      team.set({
-        ownerId: req.user.id
-      });
-      await team.save({ fields: ['name', 'ownerId'] });
+      const team = await models.Team.createWithOwner(req.user, req.body);
       await req.flash('info', `新規チーム${team.name}を作成しました`)
-      await models.Member.create({
-        teamId: team.id,
-        userId: req.user.id,
-        role: models.Member.roles.manager
-      });
-
       res.redirect(`/`);
     } catch (err) {
       if (err instanceof ValidationError) {
