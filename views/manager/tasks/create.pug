@@ -3,6 +3,13 @@ extends ../../layout
 block content 
   h1 タスクの新規作成
 
+  - if(err)
+    - errors = err.errors 
+
+    ul.errors
+      each error in errors
+        li= error.message
+
   form(action!=`/manager/teams/${team.id}/tasks`, method='post')
     _csrf
     _method=method

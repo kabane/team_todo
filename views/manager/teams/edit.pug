@@ -3,6 +3,13 @@ extends ../../layout
 block content 
   h1 チーム編集
 
+  - if(err)
+    - errors = err.errors 
+
+    ul.errors
+      each error in errors
+        li= error.message
+
   form.box(action=`/manager/teams/${team.id}`, method="post")
     _csrf
     _method put

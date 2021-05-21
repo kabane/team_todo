@@ -36,16 +36,18 @@ module.exports = (sequelize, DataTypes) => {
           msg: 'タイトルは空ではいけません'
         },
         len: { 
-          msg: 'タイトルは255文字未満です',
-          args: [0, 255]
+          msg: 'タイトルは10文字未満です',
+          args: [0, 10]
         }
       }
     },    
     body: { 
       type: DataTypes.TEXT,
-      len: { 
-        msg: '本文は4096文字未満です',
-        args: [0, 4096]
+      validate: {
+        len: { 
+          msg: '本文は30文字未満です',
+          args: [0, 30]
+        }
       }
     },
     status: DataTypes.INTEGER

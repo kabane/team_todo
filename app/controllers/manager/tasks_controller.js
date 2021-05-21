@@ -30,8 +30,11 @@ class TasksController extends Controller {
       res.redirect(`/manager/teams/${team.id}`);
     } catch (err) {
       if (err instanceof ValidationError) {
-        const users = await team.getUsers({ order: [['id']] });
-        res.render('/manager/teams/${team.id}/tasks/create', { team, task, users, err: err });
+        const members = await team.getMembers({
+          include: ['user'],
+          order: [['id']]
+        });
+        res.render('manager/tasks/create', { team, task, members, err: err });
       } else {
         throw err;
       }
@@ -70,8 +73,11 @@ class TasksController extends Controller {
       res.redirect(`/manager/teams/${team.id}/tasks/${task.id}/edit`);
     } catch (err) {
       if (err instanceof ValidationError) {
-        const users = await team.getUsers({ order: [['id']] });
-        res.render('manager/tasks/edit', { team, task, users, err: err });
+        const members = await team.getMembers({
+          include: ['user'],
+          order: [['id']]
+        });
+        res.render('manager/tasks/edit', { team, task, members, err: err });
       } else {
         throw err;
       }

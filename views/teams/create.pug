@@ -1,7 +1,15 @@
 extends ../layout
 
+
 block content 
   h1 チーム作成
+
+  - if(err)
+    - errors = err.errors 
+
+    ul.errors
+      each error in errors
+        li= error.message
 
   form.box(action=`/teams/`, method="post")
     _csrf
