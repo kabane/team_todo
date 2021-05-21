@@ -10,8 +10,6 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      this.Member = models.Member;
-      
       this.Members = this.hasMany(models.Member, {
         foreignKey: 'teamId'
       });
@@ -33,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
           ownerId: user.id
         });
         await team.save({ fields: ['name', 'ownerId'], transaction: t });
-        await this.Member.create({
+        await team.createMember({
           teamId: team.id,
           userId: user.id,
           role: 1
